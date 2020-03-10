@@ -6,6 +6,9 @@ class ArraySorter:
         self.items = items
         self.size = size
 
+        self.heapify()
+
+    def heapify(self):
         for i in range(self.size, -1, -1):
             util.max_heapify(self.items, self.size, i)
 
@@ -13,47 +16,21 @@ class ArraySorter:
         self.items.append(item)
         self.size += 1
 
-        for i in range(self.size, -1, -1):
-            util.max_heapify(self.items, self.size, i)
+        self.heapify()
 
     def dequeue(self) -> object:
         item = self.items.pop(0)
         self.size -= 1
 
-        for i in range(self.size, -1, -1):
-            util.max_heapify(self.items, self.size, i)
+        self.heapify()
 
         return item
 
     def sort_ascending(self) -> list:
-        data = self.items.copy()
-        n = len(data)
-        if n < 2:
-            return data
-
-        for i in range(n, -1, -1):
-            util.max_heapify(data, n, i)
-
-        for i in range(n - 1, 0, -1):
-            data[i], data[0] = data[0], data[i]
-            util.max_heapify(data, i, 0)
-
-        return data
+        return self.sort(lambda x, y: x > y)
 
     def sort_descending(self) -> list:
-        data = self.items.copy()
-        n = len(data)
-        if n < 2:
-            return data
-
-        for i in range(n, -1, -1):
-            util.min_heapify(data, n, i)
-
-        for i in range(n - 1, 0, -1):
-            data[i], data[0] = data[0], data[i]
-            util.min_heapify(data, i, 0)
-
-        return data
+        return self.sort(lambda x, y: x < y)
 
     def sort(self, comparator: callable) -> list:
         def heapify(data: list, n: int, i: int, comparator: callable):
@@ -85,7 +62,7 @@ class ArraySorter:
         return data
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import random
 
     n = 10
